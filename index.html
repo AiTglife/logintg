@@ -119,7 +119,7 @@
     </form>
   </div>
   <script>
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyCwoghJAQUfbvCH73fIpf1jib_DC6TjuyunvHVV3rjuKFqeX-OJJ0CD3k1QW5yEnbd/exec', { opt: 'register', id: id,fname:fname, uid: uid }, function (res) {
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyCwoghJAQUfbvCH73fIpf1jib_DC6TjuyunvHVV3rjuKFqeX-OJJ0CD3k1QW5yEnbd/exec', 
 
     var uid
     $(document).ready(() => {
@@ -128,21 +128,18 @@
         withLoginOnExternalBrowser: true
       })
       liff.ready.then(() => {
-            let btn = document.getElementById('submit-btn')
-            btn.addEventListener('click', submit)
-        });
+        console.log('liff ready')
+      })
     })
 
-
     function submit() {
-      let id = $('#id').val()
-        let fname = $('#fname').val()
-    if(id != '' && fname != '' ){
-        $("#submit-btn").hide()
-        $("#bt2").show()
-        console.log('submit')
+      $.LoadingOverlay('show')
+      let data = {
+        opt: 'register',
+        uid: liff.getDecodedIDToken().sub,
+        id: $('#id').val(),
+        fname: $('#fname').val(),
       }
-
 
       $.ajax({
         method: "POST",
@@ -159,6 +156,7 @@
               title: 'บันทึกข้อมูลเรียบร้อย', 
               allowOutsideClick: false,
               confirmButtonText: 'ตกลง'
+              liff.closeWindow()
             })
           }
           return Swal.fire({
